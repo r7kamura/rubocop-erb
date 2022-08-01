@@ -1,0 +1,19 @@
+require:
+  - rubocop-erb
+
+inherit_mode:
+  merge:
+    - Exclude
+
+AllCops:
+  Exclude:
+    - spec/**/*.erb
+  NewCops: enable
+  TargetRubyVersion: 2.7
+
+Metrics:
+  Enabled: false
+
+Naming/FileName:
+  Exclude:
+    - lib/rubocop-erb.rb
