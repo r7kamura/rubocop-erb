@@ -127,6 +127,10 @@ Lint/EmptyFile:
   Exclude:
     - '**/*.erb'
 
+Lint/SyntaxError:
+  Exclude:
+    - '**/*.erb'
+
 Lint/UselessAssignment:
   Exclude:
     - '**/*.erb'
