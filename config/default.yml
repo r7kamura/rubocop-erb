@@ -27,10 +27,6 @@ Layout/InitialIndentation:
   Exclude:
     - '**/*.erb'
 
-Lint/EmptyFile:
-  Exclude:
-    - '**/*.erb'
-
 Layout/EmptyLineAfterGuardClause:
   Exclude:
     - '**/*.erb'
@@ -124,6 +120,10 @@ Layout/TrailingEmptyLines:
     - '**/*.erb'
 
 Layout/TrailingWhitespace:
+  Exclude:
+    - '**/*.erb'
+
+Lint/EmptyFile:
   Exclude:
     - '**/*.erb'
 
