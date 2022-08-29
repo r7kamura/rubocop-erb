@@ -40,11 +40,13 @@ module RuboCop
       class PrecedingKeywordRemover
         REGEXP = /
           \A
+          \s*
           (?:
             begin
             | case
             | else
             | elsif
+            | end
             | ensure
             | if
             | rescue
