@@ -28,6 +28,8 @@ module RuboCop
         nodes.map do |node|
           snippet = node.children.first
           clip = RubyClipper.new(snippet).call
+          next if clip[:code].match?(/\A\s*\z/)
+
           {
             offset: node.location.begin_pos + clip[:offset],
             processed_source: ::RuboCop::ProcessedSource.new(
@@ -36,7 +38,7 @@ module RuboCop
               file_path
             )
           }
-        end
+        end.compact
       end
 
       private

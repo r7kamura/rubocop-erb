@@ -23,6 +23,7 @@ RSpec.describe RuboCop::Erb::RubyExtractor do
         <% "a" %>
         <%= b %>
         <% a = 1 %>
+        <%- end %>
       ERB
     end
 
