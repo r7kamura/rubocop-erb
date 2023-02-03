@@ -7,6 +7,6 @@ gemspec
 
 gem 'rake'
 gem 'rspec'
-gem 'rubocop', github: 'r7kamura/rubocop', branch: 'feature/template-support'
+gem 'rubocop', github: 'rubocop/rubocop'
 gem 'rubocop-rake'
 gem 'rubocop-rspec'
