@@ -30,13 +30,16 @@ module RuboCop
           clip = RubyClipper.new(snippet).call
           next if clip[:code].match?(/\A\s*\z/)
 
+          processed_source = ::RuboCop::ProcessedSource.new(
+            clip[:code],
+            @processed_source.ruby_version,
+            file_path
+          )
+          processed_source.config = @processed_source.config
+          processed_source.registry = @processed_source.registry
           {
             offset: node.location.begin_pos + clip[:offset],
-            processed_source: ::RuboCop::ProcessedSource.new(
-              clip[:code],
-              @processed_source.ruby_version,
-              file_path
-            )
+            processed_source: processed_source
           }
         end.compact
       end
