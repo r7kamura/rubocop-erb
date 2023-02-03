@@ -17,3 +17,6 @@ Metrics:
 Naming/FileName:
   Exclude:
     - lib/rubocop-erb.rb
+
+Style/Documentation:
+  Enabled: false
