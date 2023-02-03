@@ -1,6 +1,7 @@
 require:
   - rubocop-erb
   - rubocop-rake
+  - rubocop-rspec
 
 inherit_mode:
   merge:
@@ -18,6 +19,15 @@ Metrics:
 Naming/FileName:
   Exclude:
     - lib/rubocop-erb.rb
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/NamedSubject:
+  Enabled: false
 
 Style/Documentation:
   Enabled: false
