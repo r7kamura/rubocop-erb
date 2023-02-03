@@ -1,5 +1,6 @@
 require:
   - rubocop-erb
+  - rubocop-rake
 
 inherit_mode:
   merge:
