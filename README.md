@@ -53,3 +53,9 @@ spec/fixtures/dummy.erb:7:11: E: Lint/Syntax: unexpected token $end
 
 1 file inspected, 4 offenses detected, 3 offenses autocorrectable
 ```
+
+## Related projects
+
+- https://github.com/r7kamura/rubocop-haml
+- https://github.com/r7kamura/rubocop-slim
+- https://github.com/r7kamura/rubocop-markdown
