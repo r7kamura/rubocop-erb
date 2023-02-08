@@ -30,5 +30,5 @@ Gem::Specification.new do |spec|
   spec.metadata['rubygems_mfa_required'] = 'true'
 
   spec.add_dependency 'better_html'
-  spec.add_dependency 'rubocop', '~> 1.32'
+  spec.add_dependency 'rubocop', '~> 1.45'
 end
