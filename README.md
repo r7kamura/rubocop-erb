@@ -20,7 +20,7 @@ gem install rubocop-erb
 
 ## Usage
 
-Require `"rubocop-erb"` in your RuboCop config.
+Require `rubocop-erb` in your RuboCop config.
 
 ```yaml
 # .rubocop.yml
