@@ -2,8 +2,8 @@
 
 module RuboCop
   module Erb
-    # Remove unnecessary part (e.g. `if`, `unless`, `do`, ...) from Ruby-ish code.
-    class RubyClipper
+    # Remove unnecessary keyword part (e.g. `if`, `unless`, `do`, ...) from Ruby-ish code.
+    class KeywordRemover
       class << self
         # @param [RuboCop::Erb::RubyClip] ruby_clip
         # @return [RuboCop::Erb::RubyClip]

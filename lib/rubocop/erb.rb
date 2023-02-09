@@ -3,8 +3,8 @@
 module RuboCop
   module Erb
     autoload :ConfigLoader, 'rubocop/erb/config_loader'
+    autoload :KeywordRemover, 'rubocop/erb/keyword_remover'
     autoload :RubyClip, 'rubocop/erb/ruby_clip'
-    autoload :RubyClipper, 'rubocop/erb/ruby_clipper'
     autoload :RubyExtractor, 'rubocop/erb/ruby_extractor'
     autoload :WhenDecomposer, 'rubocop/erb/when_decomposer'
   end
