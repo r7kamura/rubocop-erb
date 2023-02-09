@@ -49,6 +49,11 @@ module RuboCop
         end
       end
 
+      # @return [String, nil]
+      def file_path
+        @processed_source.path
+      end
+
       # @return [Enumerator<BetterHtml::AST::Node>]
       def nodes
         erbs.flat_map do |erb|
@@ -81,11 +86,6 @@ module RuboCop
         end.reject do |ruby_clip|
           ruby_clip.code.match?(/\A\s*\z/)
         end
-      end
-
-      # @return [String, nil]
-      def file_path
-        @processed_source.path
       end
 
       # @return [Boolean]
