@@ -77,7 +77,7 @@ module RuboCop
         end.flat_map do |ruby_clip|
           WhenDecomposer.call(ruby_clip)
         end.map do |ruby_clip|
-          RubyClipper.call(ruby_clip)
+          KeywordRemover.call(ruby_clip)
         end.reject do |ruby_clip|
           ruby_clip.code.match?(/\A\s*\z/)
         end
