@@ -20,10 +20,6 @@ Gemspec/RequireMFA:
 Metrics:
   Enabled: false
 
-Naming/FileName:
-  Exclude:
-    - lib/rubocop-erb.rb
-
 RSpec/ExampleLength:
   Enabled: false
 
