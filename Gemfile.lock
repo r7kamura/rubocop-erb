@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rubocop-erb (0.2.0)
+    rubocop-erb (0.2.1)
       better_html
       rubocop (~> 1.45)
 
