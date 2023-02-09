@@ -34,3 +34,6 @@ RSpec/NamedSubject:
 
 Style/Documentation:
   Enabled: false
+
+Style/MultilineBlockChain:
+  Enabled: false

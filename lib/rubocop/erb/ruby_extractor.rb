@@ -25,23 +25,19 @@ module RuboCop
       def call
         return unless supported_file_path_pattern?
 
-        nodes.map do |node|
-          snippet = node.children.first
-          clip = RubyClipper.new(snippet).call
-          next if clip[:code].match?(/\A\s*\z/)
-
+        ruby_clips.map do |ruby_clip|
           processed_source = ::RuboCop::ProcessedSource.new(
-            clip[:code],
+            ruby_clip.code,
             @processed_source.ruby_version,
             file_path
           )
           processed_source.config = @processed_source.config
           processed_source.registry = @processed_source.registry
           {
-            offset: node.location.begin_pos + clip[:offset],
+            offset: ruby_clip.offset,
             processed_source: processed_source
           }
-        end.compact
+        end
       end
 
       private
@@ -69,6 +65,22 @@ module RuboCop
           ),
           template_language: :html
         ).ast
+      end
+
+      # @return [Array<RuboCop::Erb::RubyClip>]
+      def ruby_clips
+        nodes.map do |node|
+          RubyClip.new(
+            code: node.children.first,
+            offset: node.location.begin_pos
+          )
+        end.flat_map do |ruby_clip|
+          WhenDecomposer.call(ruby_clip)
+        end.map do |ruby_clip|
+          RubyClipper.call(ruby_clip)
+        end.reject do |ruby_clip|
+          ruby_clip.code.match?(/\A\s*\z/)
+        end
       end
 
       # @return [String, nil]
