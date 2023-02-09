@@ -2,6 +2,7 @@ require:
   - rubocop-erb
   - rubocop-rake
   - rubocop-rspec
+  - sevencop
 
 inherit_mode:
   merge:
@@ -31,6 +32,21 @@ RSpec/MultipleExpectations:
 
 RSpec/NamedSubject:
   Enabled: false
+
+Sevencop/AutoloadOrdered:
+  Enabled: true
+
+Sevencop/HashElementOrdered:
+  Enabled: true
+
+Sevencop/MethodDefinitionArgumentsMultiline:
+  Enabled: true
+
+Sevencop/MethodDefinitionKeywordArgumentOrdered:
+  Enabled: true
+
+Sevencop/MethodDefinitionOrdered:
+  Enabled: true
 
 Style/Documentation:
   Enabled: false

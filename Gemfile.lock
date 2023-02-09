@@ -87,6 +87,9 @@ GEM
       rubocop (~> 1.33)
       rubocop-capybara (~> 2.17)
     ruby-progressbar (1.11.0)
+    sevencop (0.33.0)
+      activesupport
+      rubocop
     smart_properties (1.17.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
@@ -101,6 +104,7 @@ DEPENDENCIES
   rubocop-erb!
   rubocop-rake
   rubocop-rspec
+  sevencop
 
 BUNDLED WITH
    2.3.19
