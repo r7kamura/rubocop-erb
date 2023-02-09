@@ -7,6 +7,14 @@ AllCops:
   Include:
     - '**/*.erb'
 
+Erb/LeadingWhitespace:
+  Include:
+    - '**/*.erb'
+
+Erb/TrailingWhitespace:
+  Include:
+    - '**/*.erb'
+
 Layout/ArgumentAlignment:
   Exclude:
     - '**/*.erb'
