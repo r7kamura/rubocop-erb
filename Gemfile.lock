@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rubocop-erb (0.2.2)
+    rubocop-erb (0.2.3)
       better_html
       rubocop (~> 1.45)
 
@@ -39,7 +39,7 @@ GEM
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     minitest (5.17.0)
-    nokogiri (1.14.1-x86_64-linux)
+    nokogiri (1.14.2-x86_64-linux)
       racc (~> 1.4)
     parallel (1.22.1)
     parser (3.2.0.0)
