@@ -57,5 +57,18 @@ RSpec.describe RuboCop::Erb::RubyExtractor do
         expect(result[1][:offset]).to eq(11)
       end
     end
+
+    context 'with `else`' do
+      let(:source) do
+        <<~ERB
+          <% else %>
+        ERB
+      end
+
+      it 'returns Ruby codes for a and b' do
+        result = subject
+        expect(result).to be_empty
+      end
+    end
   end
 end
