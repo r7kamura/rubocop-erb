@@ -54,6 +54,20 @@ spec/fixtures/dummy.erb:7:11: E: Lint/Syntax: unexpected token $end
 1 file inspected, 4 offenses detected, 3 offenses autocorrectable
 ```
 
+## Workaround
+
+As a known issue, there seems to be a problem with .rubocop_todo.yml overriding config/default.yml provided by rubocop-erb, so we recommend adding a workaround to your .rubocop.yml as shown below:
+
+```yaml
+inherit_from: .rubocop_todo.yml
+
+inherit_mode:
+  merge:
+    - Exclude
+```
+
+See [#15](https://github.com/r7kamura/rubocop-erb/issues/15) for more details.
+
 ## Related projects
 
 - https://github.com/r7kamura/rubocop-haml
