@@ -44,8 +44,9 @@ module RuboCop
 
       # @return [Array<BetterHtml::AST::Node>]
       def erbs
-        root.descendants(:erb).reject do |erb|
-          erb.children.first&.type == :indicator && erb.children.first&.to_a&.first == '#'
+        root.descendants(:erb).reject do |node|
+          erb_node = ErbNode.new(node)
+          erb_node.comment? || erb_node.escape?
         end
       end
 
@@ -96,6 +97,37 @@ module RuboCop
       # @return [String]
       def template_source
         @processed_source.raw_source
+      end
+
+      class ErbNode
+        # @param [BetterHtml::AST::Node] node
+        def initialize(node)
+          @node = node
+        end
+
+        # @return [Boolean]
+        def comment?
+          indicator == '#'
+        end
+
+        # @return [Boolean]
+        def escape?
+          indicator == '%'
+        end
+
+        private
+
+        # @return [BetterHtml::AST::Node, nil]
+        def first_child
+          @node.children.first
+        end
+
+        # @return [String, nil]
+        def indicator
+          return unless first_child&.type == :indicator
+
+          first_child&.to_a&.first
+        end
       end
     end
   end

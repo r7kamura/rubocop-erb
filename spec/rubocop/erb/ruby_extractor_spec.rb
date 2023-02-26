@@ -70,5 +70,31 @@ RSpec.describe RuboCop::Erb::RubyExtractor do
         expect(result).to be_empty
       end
     end
+
+    context 'with `<%# a %>`' do
+      let(:source) do
+        <<~ERB
+          <%# a %>
+        ERB
+      end
+
+      it 'ignores comments' do
+        result = subject
+        expect(result).to be_empty
+      end
+    end
+
+    context 'with `<%% a %%>`' do
+      let(:source) do
+        <<~ERB
+          <%% a %%>
+        ERB
+      end
+
+      it 'ignores escapes' do
+        result = subject
+        expect(result).to be_empty
+      end
+    end
   end
 end
