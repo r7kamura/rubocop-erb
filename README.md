@@ -33,7 +33,7 @@ Now you can use RuboCop also for ERB templates.
 ```
 $ bundle exec rubocop spec/fixtures/dummy.erb
 Inspecting 1 file
-E
+C
 
 Offenses:
 
@@ -46,12 +46,11 @@ spec/fixtures/dummy.erb:4:9: C: [Correctable] Style/ZeroLengthPredicate: Use !em
 spec/fixtures/dummy.erb:5:4: C: [Correctable] Style/NegatedIf: Favor unless over if for negative conditions.
 <% a if !b %>
    ^^^^^^^
-spec/fixtures/dummy.erb:7:11: E: Lint/Syntax: unexpected token $end
-(Using Ruby 2.6 parser; configure using TargetRubyVersion parameter, under AllCops)
+spec/fixtures/dummy.erb:7:7: C: [Correctable] Style/StringLiterals: Prefer single-quoted strings when you don't need string interpolation or special symbols.
 <% if "a" %>
+      ^^^
 
-
-1 file inspected, 4 offenses detected, 3 offenses autocorrectable
+1 file inspected, 4 offenses detected, 4 offenses autocorrectable
 ```
 
 ## Workaround
