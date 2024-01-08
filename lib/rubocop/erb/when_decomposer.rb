@@ -10,7 +10,7 @@ module RuboCop
         \A
         \s*
         when[ \t]
-      /x.freeze
+      /x
 
       class << self
         # @param [RuboCop::Erb::RubyClip] ruby_clip
