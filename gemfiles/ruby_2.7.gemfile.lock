@@ -1,5 +1,5 @@
 PATH
-  remote: .
+  remote: ..
   specs:
     rubocop-erb (0.3.0)
       better_html
@@ -51,7 +51,7 @@ GEM
       nokogiri (>= 1.12.0)
     minitest (5.20.0)
     mutex_m (0.2.0)
-    nokogiri (1.16.0-x86_64-linux)
+    nokogiri (1.15.5-x86_64-linux)
       racc (~> 1.4)
     parallel (1.24.0)
     parser (3.3.0.2)
@@ -119,6 +119,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  nokogiri (~> 1.15.0)
   rake
   rspec
   rubocop-erb!
