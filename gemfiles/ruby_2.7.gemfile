@@ -1,0 +1,12 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+
+gemspec path: '..'
+
+gem 'nokogiri', '~> 1.15.0'
+gem 'rake'
+gem 'rspec'
+gem 'rubocop-rake'
+gem 'rubocop-rspec'
+gem 'sevencop'
