@@ -149,9 +149,9 @@ module RuboCop
           [ \t]
           do
           [ \t]*
-          (\|[^|]*\|)?
-          [ \t]*
-          \Z
+          (?:\|[^|]*\|)?
+          \s*
+          \z
         /x.freeze
       end
     end

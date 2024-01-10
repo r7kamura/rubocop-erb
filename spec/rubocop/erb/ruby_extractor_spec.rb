@@ -128,5 +128,21 @@ RSpec.describe RuboCop::Erb::RubyExtractor do
         expect(result[0][:offset]).to eq(7)
       end
     end
+
+    context 'with trailing newline after `do`' do
+      let(:source) do
+        <<~ERB
+          <% foo.each do
+           %>
+        ERB
+      end
+
+      it 'ignores `do`' do
+        result = subject
+        expect(result.length).to eq(1)
+        expect(result[0][:processed_source].raw_source).to eq(' foo.each')
+        expect(result[0][:offset]).to eq(2)
+      end
+    end
   end
 end
