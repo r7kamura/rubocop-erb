@@ -21,6 +21,8 @@ module RuboCop
       def call
         [
           PrecedingKeywordRemover,
+          PrecedingBraceRemover,
+          TrailingBraceRemover,
           TrailingDoRemover
         ].reduce(@ruby_clip) do |previous, callable|
           result = callable.call(previous.code)
@@ -31,8 +33,40 @@ module RuboCop
         end
       end
 
+      class PrecedingSourceRemover
+        class << self
+          # @param [String] code
+          # @return [RubyClip]
+          def call(code)
+            new(code).call
+          end
+        end
+
+        # @param [String] code
+        def initialize(code)
+          @code = code
+        end
+
+        # @return [Hash]
+        def call
+          data = @code.match(self.class::REGEXP)
+          if data
+            offset = data[0].length
+            RubyClip.new(
+              code: @code[offset..],
+              offset: offset
+            )
+          else
+            RubyClip.new(
+              code: @code,
+              offset: 0
+            )
+          end
+        end
+      end
+
       # Remove preceding keyword.
-      class PrecedingKeywordRemover
+      class PrecedingKeywordRemover < PrecedingSourceRemover
         REGEXP = /
           \A
           \s*
@@ -53,49 +87,18 @@ module RuboCop
           )
           \b[ \t]*
         /x.freeze
-
-        class << self
-          # @param [String] code
-          # @return [RubyClip]
-          def call(code)
-            new(code).call
-          end
-        end
-
-        # @param [String] code
-        def initialize(code)
-          @code = code
-        end
-
-        # @return [Hash]
-        def call
-          data = @code.match(REGEXP)
-          if data
-            offset = data[0].length
-            RubyClip.new(
-              code: @code[offset..],
-              offset: offset
-            )
-          else
-            RubyClip.new(
-              code: @code,
-              offset: 0
-            )
-          end
-        end
       end
 
-      # Remove trailing `do`.
-      class TrailingDoRemover
+      # Remove preceding `}`.
+      class PrecedingBraceRemover < PrecedingSourceRemover
         REGEXP = /
-          [ \t]
-          do
-          [ \t]*
-          (\|[^|]*\|)?
-          [ \t]*
-          \Z
+          \A
+          \s*
+          }
         /x.freeze
+      end
 
+      class TrailingSourceRemover
         class << self
           # @param [String] code
           # @return [RubyClip]
@@ -112,10 +115,33 @@ module RuboCop
         # @return [Hash]
         def call
           RubyClip.new(
-            code: @code.sub(REGEXP, ''),
+            code: @code.sub(self.class::REGEXP, ''),
             offset: 0
           )
         end
+      end
+
+      # Remove trailing `{`.
+      class TrailingBraceRemover < TrailingSourceRemover
+        REGEXP = /
+          {
+          [ \t]*
+          (?:\|[^|]*\|)?
+          \s*
+          \z
+        /x.freeze
+      end
+
+      # Remove trailing `do`.
+      class TrailingDoRemover < TrailingSourceRemover
+        REGEXP = /
+          [ \t]
+          do
+          [ \t]*
+          (\|[^|]*\|)?
+          [ \t]*
+          \Z
+        /x.freeze
       end
     end
   end
