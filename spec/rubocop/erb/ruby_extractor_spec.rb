@@ -113,5 +113,20 @@ RSpec.describe RuboCop::Erb::RubyExtractor do
         expect(result[0][:offset]).to eq(3)
       end
     end
+
+    context 'with trailing `then`' do
+      let(:source) do
+        <<~ERB
+          <%= if foo then %>
+        ERB
+      end
+
+      it 'ignores `then`' do
+        result = subject
+        expect(result.length).to eq(1)
+        expect(result[0][:processed_source].raw_source).to eq('foo')
+        expect(result[0][:offset]).to eq(7)
+      end
+    end
   end
 end

@@ -23,6 +23,7 @@ module RuboCop
           PrecedingKeywordRemover,
           PrecedingBraceRemover,
           TrailingBraceRemover,
+          TrailingThenRemover,
           TrailingDoRemover
         ].reduce(@ruby_clip) do |previous, callable|
           result = callable.call(previous.code)
@@ -127,6 +128,16 @@ module RuboCop
           {
           [ \t]*
           (?:\|[^|]*\|)?
+          \s*
+          \z
+        /x.freeze
+      end
+
+      # Remove trailing `then`.
+      class TrailingThenRemover < TrailingSourceRemover
+        REGEXP = /
+          [ \t]*\b
+          then
           \s*
           \z
         /x.freeze
