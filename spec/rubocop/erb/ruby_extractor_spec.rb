@@ -96,5 +96,53 @@ RSpec.describe RuboCop::Erb::RubyExtractor do
         expect(result).to be_empty
       end
     end
+
+    context 'with braces' do
+      let(:source) do
+        <<~ERB
+          <%= foo.each { |a, b| %>
+            <br>
+          <% } %>
+        ERB
+      end
+
+      it 'ignores both opening and closing braces' do
+        result = subject
+        expect(result.length).to eq(1)
+        expect(result[0][:processed_source].raw_source).to eq(' foo.each ')
+        expect(result[0][:offset]).to eq(3)
+      end
+    end
+
+    context 'with trailing `then`' do
+      let(:source) do
+        <<~ERB
+          <%= if foo then %>
+        ERB
+      end
+
+      it 'ignores `then`' do
+        result = subject
+        expect(result.length).to eq(1)
+        expect(result[0][:processed_source].raw_source).to eq('foo')
+        expect(result[0][:offset]).to eq(7)
+      end
+    end
+
+    context 'with trailing newline after `do`' do
+      let(:source) do
+        <<~ERB
+          <% foo.each do
+           %>
+        ERB
+      end
+
+      it 'ignores `do`' do
+        result = subject
+        expect(result.length).to eq(1)
+        expect(result[0][:processed_source].raw_source).to eq(' foo.each')
+        expect(result[0][:offset]).to eq(2)
+      end
+    end
   end
 end
