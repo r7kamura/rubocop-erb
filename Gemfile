@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in rubocop-erb.gemspec
 gemspec
 
+gem 'prism'
 gem 'rake'
 gem 'rspec'
 gem 'rubocop-rake'

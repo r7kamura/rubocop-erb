@@ -18,6 +18,8 @@ jobs:
         include:
         - ruby: '2.7'
           gemfile: 'gemfiles/ruby_2.7.gemfile'
+        - ruby: '3.3'
+          parser_engine: parser_prism
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/${{ matrix.gemfile }}
     steps:
@@ -27,5 +29,5 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
-    - run: bundle exec rspec
+    - run: PARSER_ENGINE=${{ matrix.parser_engine }} bundle exec rspec
     - run: bundle exec rubocop --format progress --format github

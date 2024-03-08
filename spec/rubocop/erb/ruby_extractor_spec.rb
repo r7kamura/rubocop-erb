@@ -6,12 +6,26 @@ RSpec.describe RuboCop::Erb::RubyExtractor do
       described_class.call(processed_source)
     end
 
+    let(:parser_engine) do
+      env_value = ENV.fetch('PARSER_ENGINE', nil)
+      env_value == '' ? nil : env_value&.to_sym
+    end
+
     let(:processed_source) do
-      RuboCop::ProcessedSource.new(
-        source,
-        3.1,
-        file_path
-      )
+      if parser_engine
+        RuboCop::ProcessedSource.new(
+          source,
+          3.3,
+          file_path,
+          parser_engine: parser_engine
+        )
+      else
+        RuboCop::ProcessedSource.new(
+          source,
+          3.1,
+          file_path
+        )
+      end
     end
 
     let(:file_path) do
@@ -38,6 +52,15 @@ RSpec.describe RuboCop::Erb::RubyExtractor do
         expect(result[1][:offset]).to eq(13)
         expect(result[2][:processed_source].raw_source).to eq(' a = 1 ')
         expect(result[2][:offset]).to eq(21)
+      end
+
+      it 'passes on the parser_engine' do
+        next 'Running without passing a parser engine' unless parser_engine
+
+        result = subject
+        expect(result[0][:processed_source].parser_engine).to eq(parser_engine)
+        expect(result[1][:processed_source].parser_engine).to eq(parser_engine)
+        expect(result[2][:processed_source].parser_engine).to eq(parser_engine)
       end
     end
 
