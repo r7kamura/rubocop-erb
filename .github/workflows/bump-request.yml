@@ -23,7 +23,7 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.3
-      - uses: r7kamura/bump-request@gem
+      - uses: r7kamura/bump-request@v0
         with:
           command: |
             sed -i -r 's/([0-9]+\.[0-9]+\.[0-9]+)/${{ inputs.version }}/' lib/rubocop/erb/version.rb
