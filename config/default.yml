@@ -135,6 +135,10 @@ Lint/EmptyFile:
   Exclude:
     - '**/*.erb'
 
+Lint/OutOfRangeRegexpRef:
+  Exclude:
+    - '**/*.erb'
+
 Lint/SyntaxError:
   Exclude:
     - '**/*.erb'
