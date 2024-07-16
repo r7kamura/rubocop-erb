@@ -25,5 +25,8 @@ jobs:
           ruby-version: 3.3
       - uses: r7kamura/bump-request@gem
         with:
+          command: |
+            sed -i -r 's/([0-9]+\.[0-9]+\.[0-9]+)/${{ inputs.version }}/' lib/rubocop/erb/version.rb
+            BUNDLE_GEMFILE=gemfiles/ruby_2.7.gemfile bundle install
           release_type: ${{ inputs.release_type }}
           version: ${{ inputs.version }}
