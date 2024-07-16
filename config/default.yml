@@ -79,6 +79,10 @@ Layout/LeadingEmptyLine:
   Exclude:
     - '**/*.erb'
 
+Layout/LeadingEmptyLines:
+  Exclude:
+    - '**/*.erb'
+
 Layout/LineEndStringConcatenationIndentation:
   Exclude:
     - '**/*.erb'
