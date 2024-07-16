@@ -23,7 +23,7 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.3
-      - uses: r7kamura/bump-request@v0
+      - uses: r7kamura/bump-request@gem
         with:
           release_type: ${{ inputs.release_type }}
           version: ${{ inputs.version }}
