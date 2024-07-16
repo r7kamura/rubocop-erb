@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 gemspec path: '..'
 
+gem 'better_html', '< 2.1' # 2.1 dropped ruby 2.7 support.
 gem 'nokogiri', '~> 1.15.0'
 gem 'rake'
 gem 'rspec'

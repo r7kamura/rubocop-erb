@@ -26,7 +26,7 @@ GEM
       tzinfo (~> 2.0)
     ast (2.4.2)
     base64 (0.2.0)
-    better_html (2.1.1)
+    better_html (2.0.2)
       actionview (>= 6.0)
       activesupport (>= 6.0)
       ast (~> 2.0)
@@ -49,9 +49,11 @@ GEM
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
+    mini_portile2 (2.8.7)
     minitest (5.20.0)
     mutex_m (0.2.0)
-    nokogiri (1.15.5-x86_64-linux)
+    nokogiri (1.15.5)
+      mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     parallel (1.24.0)
     parser (3.3.0.2)
@@ -119,6 +121,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  better_html (< 2.1)
   nokogiri (~> 1.15.0)
   rake
   rspec
