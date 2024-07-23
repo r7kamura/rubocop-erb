@@ -23,6 +23,10 @@ Layout/ClosingParenthesisIndentation:
   Exclude:
     - '**/*.erb'
 
+Layout/CommentIndentation:
+  Exclude:
+    - '**/*.erb'
+
 Layout/InitialIndentation:
   Exclude:
     - '**/*.erb'
