@@ -30,10 +30,17 @@ module RuboCop
         match_data = @ruby_clip.code.match(REGEXP)
         if match_data
           offset = match_data[0].length
-          parse("[#{@ruby_clip.code[offset..]}]").children.map do |child|
+          condition = @ruby_clip.code[offset..].sub(/[ \t]then(?:[ \t].*)?/, '')
+          parse(
+            <<~RUBY
+              [
+                #{condition}
+              ]
+            RUBY
+          ).children.map do |child|
             RubyClip.new(
               code: child.location.expression.source,
-              offset: @ruby_clip.offset + offset + child.location.expression.begin_pos - 1
+              offset: @ruby_clip.offset + offset + child.location.expression.begin_pos - 4
             )
           end
         else

@@ -151,6 +151,7 @@ module RuboCop
           [ \t]*
           (?:\|[^|]*\|)?
           \s*
+          (\#.*)?
           \z
         /x.freeze
       end
