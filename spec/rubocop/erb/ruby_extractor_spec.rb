@@ -64,6 +64,20 @@ RSpec.describe RuboCop::Erb::RubyExtractor do
       end
     end
 
+    context 'with `foo(bar)do`' do
+      let(:source) do
+        <<~ERB
+          <% foo(bar)do %>
+        ERB
+      end
+
+      it 'returns `foo(bar)` part' do
+        result = subject
+        expect(result.length).to eq(1)
+        expect(result[0][:processed_source].raw_source).to eq(' foo(bar)')
+      end
+    end
+
     context 'with `when a, b`' do
       let(:source) do
         <<~ERB
