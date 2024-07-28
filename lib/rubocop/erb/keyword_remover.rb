@@ -146,7 +146,7 @@ module RuboCop
       # Remove trailing `do`.
       class TrailingDoRemover < TrailingSourceRemover
         REGEXP = /
-          [ \t]
+          (?:\b[ \t]*|[ \t])
           do
           [ \t]*
           (?:\|[^|]*\|)?
