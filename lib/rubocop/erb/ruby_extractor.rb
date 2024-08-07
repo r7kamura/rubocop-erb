@@ -28,7 +28,11 @@ module RuboCop
         ruby_clips.map do |ruby_clip|
           {
             offset: ruby_clip.offset,
-            processed_source: ruby_clip_to_processed_source(ruby_clip)
+            processed_source: ProcessedSourceHelper.code_to_processed_source(
+              @processed_source,
+              file_path,
+              ruby_clip.code
+            )
           }
         end
       end
@@ -66,28 +70,6 @@ module RuboCop
         ).ast
       end
 
-      # @return [RuboCop::ProcessedSource]
-      def ruby_clip_to_processed_source(ruby_clip)
-        supports_prism = @processed_source.respond_to?(:parser_engine)
-        processed_source = if supports_prism
-                             ::RuboCop::ProcessedSource.new(
-                               ruby_clip.code,
-                               @processed_source.ruby_version,
-                               file_path,
-                               parser_engine: @processed_source.parser_engine
-                             )
-                           else
-                             ::RuboCop::ProcessedSource.new(
-                               ruby_clip.code,
-                               @processed_source.ruby_version,
-                               file_path
-                             )
-                           end
-        processed_source.config = @processed_source.config
-        processed_source.registry = @processed_source.registry
-        processed_source
-      end
-
       # @return [Array<RuboCop::Erb::RubyClip>]
       def ruby_clips
         nodes.map do |node|
@@ -96,7 +78,7 @@ module RuboCop
             offset: node.location.begin_pos
           )
         end.flat_map do |ruby_clip|
-          WhenDecomposer.call(ruby_clip)
+          WhenDecomposer.call(@processed_source, ruby_clip)
         end.map do |ruby_clip|
           KeywordRemover.call(ruby_clip)
         end.reject do |ruby_clip|
