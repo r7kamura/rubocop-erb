@@ -59,7 +59,7 @@ module RuboCop
       # @param [String] source
       # @return [RuboCop::AST::Node]
       def parse(source)
-        ProcessedSourceHelper.code_to_processed_source(
+        ProcessedSourceBuilder.call(
           @processed_source,
           '(string)',
           source

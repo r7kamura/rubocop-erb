@@ -2,14 +2,14 @@
 
 module RuboCop
   module Erb
-    module ProcessedSourceHelper
+    module ProcessedSourceBuilder
       class << self
         # Creates a new ProcessedSource, inheriting state from a donor.
         #
         # @param [RuboCop::ProcessedSource] input_processed_source
         # @param [String] code
         # @return [RuboCop::ProcessedSource]
-        def code_to_processed_source(
+        def call(
           input_processed_source,
           path,
           code
