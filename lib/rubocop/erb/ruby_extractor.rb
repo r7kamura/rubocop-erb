@@ -63,7 +63,7 @@ module RuboCop
       def root
         ::BetterHtml::Parser.new(
           ::Parser::Source::Buffer.new(
-            @file_path,
+            file_path,
             source: template_source
           ),
           template_language: :html
