@@ -6,34 +6,34 @@ module RuboCop
       class << self
         # Creates a new ProcessedSource, inheriting state from a donor.
         #
-        # @param [RuboCop::ProcessedSource] input_processed_source
-        # @param [String] path
         # @param [String] code
+        # @param [String] path
+        # @param [RuboCop::ProcessedSource] processed_source
         # @return [RuboCop::ProcessedSource]
         def call(
-          input_processed_source,
-          path,
-          code
+          code:,
+          path:,
+          processed_source:
         )
-          supports_prism = input_processed_source.respond_to?(:parser_engine)
-          processed_source =
+          supports_prism = processed_source.respond_to?(:parser_engine)
+          new_processed_source =
             if supports_prism
               ::RuboCop::ProcessedSource.new(
                 code,
-                input_processed_source.ruby_version,
+                processed_source.ruby_version,
                 path,
-                parser_engine: input_processed_source.parser_engine
+                parser_engine: processed_source.parser_engine
               )
             else
               ::RuboCop::ProcessedSource.new(
                 code,
-                input_processed_source.ruby_version,
+                processed_source.ruby_version,
                 path
               )
             end
-          processed_source.config = input_processed_source.config
-          processed_source.registry = input_processed_source.registry
-          processed_source
+          new_processed_source.config = processed_source.config
+          new_processed_source.registry = processed_source.registry
+          new_processed_source
         end
       end
     end
