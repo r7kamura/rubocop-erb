@@ -29,9 +29,9 @@ module RuboCop
           {
             offset: ruby_clip.offset,
             processed_source: ProcessedSourceBuilder.call(
-              @processed_source,
-              file_path,
-              ruby_clip.code
+              code: ruby_clip.code,
+              path: file_path,
+              processed_source: @processed_source
             )
           }
         end
