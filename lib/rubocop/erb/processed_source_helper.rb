@@ -3,7 +3,7 @@
 module RuboCop
   module Erb
     module ProcessedSourceHelper
-      # Creates a new ProcessedSource, inheriting state from a donor
+      # Creates a new ProcessedSource, inheriting state from a donor.
       #
       # @param [RuboCop::ProcessedSource] input_processed_source
       # @param [String] code
