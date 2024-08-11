@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'parser/current'
-require 'rubocop/ast/builder'
-
 module RuboCop
   module Erb
     class WhenDecomposer
@@ -13,15 +10,24 @@ module RuboCop
       /x.freeze
 
       class << self
+        # @param [RuboCop::ProcessedSource] processed_source
         # @param [RuboCop::Erb::RubyClip] ruby_clip
         # @return [Array<RuboCop::Erb::RubyClip>]
-        def call(ruby_clip)
-          new(ruby_clip).call
+        def call(
+          processed_source,
+          ruby_clip
+        )
+          new(processed_source, ruby_clip).call
         end
       end
 
+      # @param [RuboCop::ProcessedSource] processed_source
       # @param [RuboCop::Erb::RubyClip] ruby_clip
-      def initialize(ruby_clip)
+      def initialize(
+        processed_source,
+        ruby_clip
+      )
+        @processed_source = processed_source
         @ruby_clip = ruby_clip
       end
 
@@ -53,14 +59,11 @@ module RuboCop
       # @param [String] source
       # @return [RuboCop::AST::Node]
       def parse(source)
-        ::Parser::CurrentRuby.new(
-          ::RuboCop::AST::Builder.new
-        ).parse(
-          ::Parser::Source::Buffer.new(
-            '(string)',
-            source: source
-          )
-        )
+        ProcessedSourceHelper.code_to_processed_source(
+          @processed_source,
+          '(string)',
+          source
+        ).ast
       end
     end
   end
