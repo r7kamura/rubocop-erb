@@ -7,12 +7,10 @@ module RuboCop
         # Creates a new ProcessedSource, inheriting state from a donor.
         #
         # @param [String] code
-        # @param [String] path
         # @param [RuboCop::ProcessedSource] processed_source
         # @return [RuboCop::ProcessedSource]
         def call(
           code:,
-          path:,
           processed_source:
         )
           supports_prism = processed_source.respond_to?(:parser_engine)
@@ -21,14 +19,14 @@ module RuboCop
               ::RuboCop::ProcessedSource.new(
                 code,
                 processed_source.ruby_version,
-                path,
+                processed_source.path,
                 parser_engine: processed_source.parser_engine
               )
             else
               ::RuboCop::ProcessedSource.new(
                 code,
                 processed_source.ruby_version,
-                path
+                processed_source.path
               )
             end
           new_processed_source.config = processed_source.config

@@ -61,7 +61,6 @@ module RuboCop
       def parse(source)
         ProcessedSourceBuilder.call(
           code: source,
-          path: '(string)',
           processed_source: @processed_source
         ).ast
       end
