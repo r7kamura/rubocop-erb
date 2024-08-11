@@ -28,7 +28,7 @@ module RuboCop
         ruby_clips.map do |ruby_clip|
           {
             offset: ruby_clip.offset,
-            processed_source: ProcessedSourceHelper.code_to_processed_source(
+            processed_source: ProcessedSourceBuilder.call(
               @processed_source,
               file_path,
               ruby_clip.code

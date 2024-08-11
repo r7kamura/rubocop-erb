@@ -4,7 +4,7 @@ module RuboCop
   module Erb
     autoload :ConfigLoader, 'rubocop/erb/config_loader'
     autoload :KeywordRemover, 'rubocop/erb/keyword_remover'
-    autoload :ProcessedSourceHelper, 'rubocop/erb/processed_source_helper'
+    autoload :ProcessedSourceBuilder, 'rubocop/erb/processed_source_builder'
     autoload :RubyClip, 'rubocop/erb/ruby_clip'
     autoload :RubyExtractor, 'rubocop/erb/ruby_extractor'
     autoload :WhenDecomposer, 'rubocop/erb/when_decomposer'
