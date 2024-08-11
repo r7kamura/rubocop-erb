@@ -7,6 +7,7 @@ module RuboCop
         # Creates a new ProcessedSource, inheriting state from a donor.
         #
         # @param [RuboCop::ProcessedSource] input_processed_source
+        # @param [String] path
         # @param [String] code
         # @return [RuboCop::ProcessedSource]
         def call(
