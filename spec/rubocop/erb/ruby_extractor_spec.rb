@@ -95,6 +95,21 @@ RSpec.describe RuboCop::Erb::RubyExtractor do
       end
     end
 
+    context 'with `when` closing on different line' do
+      let(:source) do
+        <<~ERB
+          <% when foo
+            @bar = baz
+          %>
+        ERB
+      end
+
+      it 'ignores the code' do
+        result = subject
+        expect(result).to be_empty
+      end
+    end
+
     context 'with `else`' do
       let(:source) do
         <<~ERB
@@ -102,7 +117,7 @@ RSpec.describe RuboCop::Erb::RubyExtractor do
         ERB
       end
 
-      it 'returns Ruby codes for a and b' do
+      it 'ignores the code' do
         result = subject
         expect(result).to be_empty
       end
