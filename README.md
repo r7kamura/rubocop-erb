@@ -24,9 +24,12 @@ Require `rubocop-erb` in your RuboCop config.
 
 ```yaml
 # .rubocop.yml
-require:
+plugins:
   - rubocop-erb
 ```
+
+> [!NOTE]
+> The plugin system is supported in RuboCop 1.72+. In earlier versions, use `require` instead of `plugins`.
 
 Now you can use RuboCop also for ERB templates.
 

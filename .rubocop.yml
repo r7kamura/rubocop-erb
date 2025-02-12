@@ -1,7 +1,9 @@
-require:
+plugins:
   - rubocop-erb
   - rubocop-rake
   - rubocop-rspec
+
+require:
   - sevencop
 
 inherit_mode:
