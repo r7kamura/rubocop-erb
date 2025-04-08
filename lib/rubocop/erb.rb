@@ -2,7 +2,6 @@
 
 module RuboCop
   module Erb
-    autoload :ConfigLoader, 'rubocop/erb/config_loader'
     autoload :KeywordRemover, 'rubocop/erb/keyword_remover'
     autoload :ProcessedSourceBuilder, 'rubocop/erb/processed_source_builder'
     autoload :RubyClip, 'rubocop/erb/ruby_clip'
@@ -11,5 +10,5 @@ module RuboCop
   end
 end
 
-require_relative 'erb/rubocop_extension'
+require_relative 'erb/plugin'
 require_relative 'erb/version'
