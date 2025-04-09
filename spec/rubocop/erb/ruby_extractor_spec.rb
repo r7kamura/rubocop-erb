@@ -196,5 +196,21 @@ RSpec.describe RuboCop::Erb::RubyExtractor do
         expect(result[0][:offset]).to eq(2)
       end
     end
+
+    context 'with a syntax error' do
+      let(:source) do
+        <<~ERB
+          <% h!.2 %>
+          <% "foo" %>
+        ERB
+      end
+
+      it 'ignores the clip' do
+        result = subject
+        expect(result.length).to eq(1)
+        expect(result[0][:processed_source].raw_source).to eq(' "foo" ')
+        expect(result[0][:offset]).to eq(13)
+      end
+    end
   end
 end

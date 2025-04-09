@@ -143,10 +143,6 @@ Lint/OutOfRangeRegexpRef:
   Exclude:
     - '**/*.erb'
 
-Lint/Syntax:
-  Exclude:
-    - '**/*.erb'
-
 Lint/UselessAssignment:
   Exclude:
     - '**/*.erb'

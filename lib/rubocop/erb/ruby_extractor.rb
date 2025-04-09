@@ -25,13 +25,16 @@ module RuboCop
       def call
         return unless supported_file_path_pattern?
 
-        ruby_clips.map do |ruby_clip|
+        ruby_clips.filter_map do |ruby_clip|
+          processed_source = ProcessedSourceBuilder.call(
+            code: ruby_clip.code,
+            processed_source: @processed_source
+          )
+          next unless processed_source.valid_syntax?
+
           {
             offset: ruby_clip.offset,
-            processed_source: ProcessedSourceBuilder.call(
-              code: ruby_clip.code,
-              processed_source: @processed_source
-            )
+            processed_source: processed_source
           }
         end
       end
