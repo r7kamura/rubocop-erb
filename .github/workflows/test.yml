@@ -27,5 +27,6 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
+        rubygems: latest
     - run: PARSER_ENGINE=${{ matrix.parser_engine }} bundle exec rspec
     - run: bundle exec rubocop --format progress --format github
