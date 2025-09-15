@@ -87,7 +87,7 @@ module RuboCop
             | for[ \t]+\w+[ \t]+in
           )
           \b[ \t]*
-        /x.freeze
+        /x
       end
 
       # Remove preceding `}`.
@@ -96,7 +96,7 @@ module RuboCop
           \A
           \s*
           }
-        /x.freeze
+        /x
       end
 
       class TrailingSourceRemover
@@ -130,7 +130,7 @@ module RuboCop
           (?:\|[^|]*\|)?
           \s*
           \z
-        /x.freeze
+        /x
       end
 
       # Remove trailing `then`.
@@ -140,7 +140,7 @@ module RuboCop
           then
           \s*
           \z
-        /x.freeze
+        /x
       end
 
       # Remove trailing `do`.
@@ -153,7 +153,7 @@ module RuboCop
           \s*
           (\#.*)?
           \z
-        /x.freeze
+        /x
       end
     end
   end
