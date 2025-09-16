@@ -33,22 +33,11 @@ module RuboCop
           @code,
           @processed_source.ruby_version,
           @processed_source.path,
-          **keyword_arguments
+          parser_engine: @processed_source.parser_engine
         )
         new_processed_source.config = @processed_source.config
         new_processed_source.registry = @processed_source.registry
         new_processed_source
-      end
-
-      private
-
-      # @return [Hash]
-      def keyword_arguments
-        if @processed_source.respond_to?(:parser_engine)
-          { parser_engine: @processed_source.parser_engine }
-        else
-          {}
-        end
       end
     end
   end
