@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require 'better_html'
-require 'better_html/parser'
+require 'herb'
 require 'rubocop'
 
 module RuboCop
@@ -38,43 +37,31 @@ module RuboCop
 
       private
 
-      # @return [Array<BetterHtml::AST::Node>]
-      def erbs
-        root.descendants(:erb).reject do |node|
-          erb_node = ErbNode.new(node)
-          erb_node.comment? || erb_node.escape?
-        end
-      end
-
       # @return [String, nil]
       def file_path
         @processed_source.path
       end
 
-      # @return [Enumerator<BetterHtml::AST::Node>]
+      # @return [Array<Herb::AST::Node>]
       def nodes
-        erbs.flat_map do |erb|
-          erb.descendants(:code).to_a
-        end
+        visitor = ErbNodeVisitor.new
+        visitor.visit(root)
+        visitor.erb_nodes
       end
 
-      # @return [BetterHtml::AST::Node]
+      # @return [Herb::AST::DocumentNode]
       def root
-        ::BetterHtml::Parser.new(
-          ::Parser::Source::Buffer.new(
-            file_path,
-            source: template_source
-          ),
-          template_language: :html
-        ).ast
+        ::Herb.parse(template_source).value
       end
 
       # @return [Array<RuboCop::Erb::RubyClip>]
       def ruby_clips
         nodes.map do |node|
+          erb_start_location = node.content.location.start
+          line_range = @processed_source.buffer.line_range(erb_start_location.line)
           RubyClip.new(
-            code: node.children.first,
-            offset: node.location.begin_pos
+            code: node.content.value,
+            offset: line_range.begin.begin_pos + erb_start_location.column
           )
         end.flat_map do |ruby_clip|
           WhenDecomposer.call(@processed_source, ruby_clip)
@@ -95,34 +82,42 @@ module RuboCop
         @processed_source.raw_source
       end
 
-      class ErbNode
-        # @param [BetterHtml::AST::Node] node
-        def initialize(node)
-          @node = node
+      class ErbNodeVisitor < Herb::Visitor
+        # @return [Array<Symbol>]
+        def self.erb_visitor_methods
+          instance_methods.select { |method_name| method_name.to_s.start_with?('visit_erb_') }
+        end
+
+        attr_reader :erb_nodes
+
+        def initialize
+          @erb_nodes = []
+          super
         end
 
         # @return [Boolean]
-        def comment?
-          indicator == '#'
+        def comment?(node)
+          node.tag_opening.value == '<%#'
         end
 
         # @return [Boolean]
-        def escape?
-          indicator == '%'
+        def escape?(node)
+          node.tag_opening.value == '<%%'
         end
 
-        private
-
-        # @return [BetterHtml::AST::Node, nil]
-        def first_child
-          @node.children.first
+        erb_visitor_methods.each do |method_name|
+          class_eval(<<~RUBY, __FILE__, __LINE__ + 1)
+            def #{method_name}(node) # def visit_erb_content_node(node)
+              record_node(node)      #   record_node(node)
+              super                  #   super
+            end                      # end
+          RUBY
         end
 
-        # @return [String, nil]
-        def indicator
-          return unless first_child&.type == :indicator
+        def record_node(node)
+          return if comment?(node) || escape?(node)
 
-          first_child&.to_a&.first
+          @erb_nodes << node
         end
       end
     end

@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'better_html'
+  spec.add_dependency 'herb', '~> 0.7'
   spec.add_dependency 'lint_roller', '~> 1.1'
   spec.add_dependency 'rubocop', '~> 1.72', '>= 1.72.1'
 end
