@@ -16,8 +16,6 @@ jobs:
         ruby: ['3.0', '3.1', '3.2', '3.3']
         gemfile: ['Gemfile']
         include:
-        - ruby: '2.7'
-          gemfile: 'gemfiles/ruby_2.7.gemfile'
         - ruby: '3.3'
           parser_engine: parser_prism
     env:
