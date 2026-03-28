@@ -97,12 +97,12 @@ module RuboCop
 
         # @return [Boolean]
         def comment?(node)
-          node.tag_opening.value == '<%#'
+          node.tag_opening&.value == '<%#'
         end
 
         # @return [Boolean]
         def escape?(node)
-          node.tag_opening.value == '<%%'
+          node.tag_opening&.value == '<%%'
         end
 
         erb_visitor_methods.each do |method_name|
@@ -115,6 +115,7 @@ module RuboCop
         end
 
         def record_node(node)
+          return unless node.respond_to?(:content) && node.content
           return if comment?(node) || escape?(node)
 
           @erb_nodes << node

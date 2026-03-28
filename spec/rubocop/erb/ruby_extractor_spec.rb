@@ -181,6 +181,23 @@ RSpec.describe RuboCop::Erb::RubyExtractor do
       end
     end
 
+    context 'with `case` and `when` in same tag' do
+      let(:source) do
+        <<~ERB
+          <% case x when "a" %>
+            <p>a</p>
+          <% when "b" %>
+            <p>b</p>
+          <% end %>
+        ERB
+      end
+
+      it 'does not crash on nodes with nil tag_opening or content' do
+        result = subject
+        expect(result).not_to be_nil
+      end
+    end
+
     context 'with trailing newline after `do`' do
       let(:source) do
         <<~ERB
