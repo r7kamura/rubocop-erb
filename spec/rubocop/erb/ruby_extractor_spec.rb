@@ -3,8 +3,10 @@
 RSpec.describe RuboCop::Erb::RubyExtractor do
   describe '.call' do
     subject do
-      described_class.call(processed_source)
+      described_class.call(processed_source).first[:processed_source]
     end
+
+    let(:transformed_source) { subject.buffer.source }
 
     let(:parser_engine) do
       env_value = ENV.fetch('PARSER_ENGINE', nil)
@@ -32,185 +34,82 @@ RSpec.describe RuboCop::Erb::RubyExtractor do
       'dummy.erb'
     end
 
-    let(:source) do
-      <<~ERB
-        <% "a" %>
-        <%= b %>
-        <% a = 1 %>
-        <%- end %>
-      ERB
-    end
-
-    context 'with valid condition' do
-      it 'returns Ruby codes with offset' do
-        result = subject
-        expect(result.length).to eq(3)
-        expect(result[0][:processed_source].raw_source).to eq(' "a" ')
-        expect(result[0][:offset]).to eq(2)
-        expect(result[0][:processed_source].file_path).to eq(file_path)
-        expect(result[1][:processed_source].raw_source).to eq(' b ')
-        expect(result[1][:offset]).to eq(13)
-        expect(result[2][:processed_source].raw_source).to eq(' a = 1 ')
-        expect(result[2][:offset]).to eq(21)
-      end
+    context 'with simple source' do
+      let(:source)  { '' }
 
       it 'passes on the parser_engine' do
         next 'Running without passing a parser engine' unless parser_engine
 
-        result = subject
-        expect(result[0][:processed_source].parser_engine).to eq(parser_engine)
-        expect(result[1][:processed_source].parser_engine).to eq(parser_engine)
-        expect(result[2][:processed_source].parser_engine).to eq(parser_engine)
+        expect(subject.parser_engine).to eq(parser_engine)
       end
     end
 
-    context 'with `foo(bar)do`' do
-      let(:source) do
-        <<~ERB
-          <% foo(bar)do %>
-        ERB
-      end
+    context 'with multiple inline tags' do
+      let(:source) { '<% if true %><%= b %><% end %>' }
 
-      it 'returns `foo(bar)` part' do
-        result = subject
-        expect(result.length).to eq(1)
-        expect(result[0][:processed_source].raw_source).to eq(' foo(bar)')
+      it 'inserts semicolons between the expressions' do
+        expect(transformed_source).to eql '   if true  ;    b  ;   end  ;'
+        expect(transformed_source.length).to be source.length
       end
     end
 
-    context 'with `when a, b`' do
-      let(:source) do
-        <<~ERB
-          <% when a, b %>
-        ERB
-      end
-
-      it 'returns Ruby codes for a and b' do
-        result = subject
-        expect(result.length).to eq(2)
-        expect(result[0][:processed_source].raw_source).to eq('a')
-        expect(result[0][:offset]).to eq(8)
-        expect(result[1][:processed_source].raw_source).to eq('b')
-        expect(result[1][:offset]).to eq(11)
-      end
-    end
-
-    context 'with `when` closing on different line' do
-      let(:source) do
-        <<~ERB
-          <% when foo
-            @bar = baz
-          %>
-        ERB
-      end
-
-      it 'ignores the code' do
-        result = subject
-        expect(result).to be_empty
-      end
-    end
-
-    context 'with `else`' do
-      let(:source) do
-        <<~ERB
-          <% else %>
-        ERB
-      end
-
-      it 'ignores the code' do
-        result = subject
-        expect(result).to be_empty
-      end
-    end
-
-    context 'with `<%# a %>`' do
-      let(:source) do
-        <<~ERB
-          <%# a %>
-        ERB
-      end
+    context 'with a comment tag' do
+      let(:source) { '<%# a %>' }
 
       it 'ignores comments' do
-        result = subject
-        expect(result).to be_empty
+        expect(transformed_source).to eql '        '
+        expect(transformed_source.length).to be source.length
       end
     end
 
-    context 'with `<%% a %%>`' do
-      let(:source) do
-        <<~ERB
-          <%% a %%>
-        ERB
-      end
+    context 'with an escape tag' do
+      let(:source) { '<%% a %%>' }
 
       it 'ignores escapes' do
-        result = subject
-        expect(result).to be_empty
+        expect(transformed_source).to eql '       ; '
+        expect(transformed_source.length).to be source.length
       end
     end
 
-    context 'with braces' do
+    context 'with multiple non-Ruby lines' do
       let(:source) do
         <<~ERB
-          <%= foo.each { |a, b| %>
-            <br>
-          <% } %>
+          <div>
+            <p>Paragraph</p>
+          </div>
         ERB
       end
 
-      it 'ignores both opening and closing braces' do
-        result = subject
-        expect(result.length).to eq(1)
-        expect(result[0][:processed_source].raw_source).to eq(' foo.each ')
-        expect(result[0][:offset]).to eq(3)
+      let(:expected_source) do
+        <<~ERB.tr('_', ' ')
+          _____
+            ________________
+          ______
+        ERB
+      end
+
+      it 'preserves line breaks' do
+        expect(transformed_source).to eql expected_source
+        expect(transformed_source.length).to be source.length
+        expect(transformed_source.split("\n").map(&:length)).to eql expected_source.split("\n").map(&:length)
       end
     end
 
-    context 'with trailing `then`' do
-      let(:source) do
-        <<~ERB
-          <%= if foo then %>
-        ERB
-      end
+    context 'with a multi-byte character in non-Ruby content' do
+      let(:source) { '<div>🎉</div><%= foo %>' }
 
-      it 'ignores `then`' do
-        result = subject
-        expect(result.length).to eq(1)
-        expect(result[0][:processed_source].raw_source).to eq('foo')
-        expect(result[0][:offset]).to eq(7)
+      it 'collapses the blanked multi-byte run so following positions stay aligned' do
+        expect(transformed_source).to eql "#{' ' * 16}foo  ;"
+        expect(transformed_source.length).to be source.length
+        expect(transformed_source.index('foo')).to be source.index('foo')
       end
     end
 
-    context 'with `case` and `when` in same tag' do
-      let(:source) do
-        <<~ERB
-          <% case x when "a" %>
-            <p>a</p>
-          <% when "b" %>
-            <p>b</p>
-          <% end %>
-        ERB
-      end
+    context 'with a syntax error' do
+      let(:source) { '<% x ' }
 
-      it 'does not crash on nodes with nil tag_opening or content' do
-        result = subject
-        expect(result).not_to be_nil
-      end
-    end
-
-    context 'with trailing newline after `do`' do
-      let(:source) do
-        <<~ERB
-          <% foo.each do
-           %>
-        ERB
-      end
-
-      it 'ignores `do`' do
-        result = subject
-        expect(result.length).to eq(1)
-        expect(result[0][:processed_source].raw_source).to eq(' foo.each')
-        expect(result[0][:offset]).to eq(2)
+      it 'does not raise an error' do
+        expect { subject }.not_to raise_error
       end
     end
   end
