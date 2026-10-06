@@ -79,10 +79,6 @@ Layout/IndentationWidth:
   Exclude:
     - '**/*.erb'
 
-Layout/LeadingEmptyLine:
-  Exclude:
-    - '**/*.erb'
-
 Layout/LeadingEmptyLines:
   Exclude:
     - '**/*.erb'
