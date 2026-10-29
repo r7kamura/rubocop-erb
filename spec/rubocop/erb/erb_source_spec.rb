@@ -21,6 +21,14 @@ RSpec.describe RuboCop::Erb::ERBSource do
     end
   end
 
+  describe '#erb_node_offsets' do
+    let(:source) { "<%= t('日本語') %><%= foo %>" }
+
+    it 'returns character ranges of tags after multi-byte Ruby code' do
+      expect(erb_source.erb_node_offsets.map(&:first)).to eq([0...15, 15...(source.length)])
+    end
+  end
+
   describe '#range_within_ruby_content?' do
     let(:source) { '<%= foo %>' }
 
@@ -31,6 +39,15 @@ RSpec.describe RuboCop::Erb::ERBSource do
 
     it 'is false for a range that covers the opening delimiter' do
       expect(erb_source.range_within_ruby_content?(0, 3)).to be(false)
+    end
+
+    context 'with multi-byte Ruby code before the tag' do
+      let(:source) { "<%= t('日本語') %><%= foo %>" }
+
+      it 'is true for a range entirely inside the tag content' do
+        start = source.index('foo')
+        expect(erb_source.range_within_ruby_content?(start, start + 3)).to be(true)
+      end
     end
   end
 end

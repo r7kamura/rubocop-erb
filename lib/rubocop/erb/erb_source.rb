@@ -44,6 +44,10 @@ module RuboCop
         herb_parse_result.value
       end
 
+      # Prefer {#herb_range_to_parser_range}: Herb ranges are always byte offsets,
+      # while the unit of Herb position columns differs between herb versions
+      # (e.g. bytes in 0.9.x and characters in 0.11.x for multi-byte Ruby code).
+      #
       # @param [Herb::Location] location
       # @return [Parser::Source::Range]
       def herb_location_to_parser_range(location)
@@ -85,8 +89,8 @@ module RuboCop
       )
         return false unless (node = erb_node_for_pos(begin_pos)) && (content = node.content)
 
-        begin_pos >= herb_position_to_buffer_pos(content.location.start) &&
-          end_pos <= herb_position_to_buffer_pos(content.location.end)
+        content_range = herb_range_to_parser_range(content.range)
+        begin_pos >= content_range.begin_pos && end_pos <= content_range.end_pos
       end
 
       # Convert various Herb node or range types to a Parser::Source::Range
@@ -96,14 +100,27 @@ module RuboCop
       # @return [Parser::Source::Range, Object, nil]
       def to_range(node_or_range)
         node_or_range = node_or_range.range if node_or_range.respond_to?(:range)
-        if node_or_range.is_a?(Herb::AST::Node) || node_or_range.is_a?(Herb::Token)
-          node_or_range = node_or_range.location
-        end
+        node_or_range = herb_node_range(node_or_range) || node_or_range.location if node_or_range.is_a?(Herb::AST::Node)
+        node_or_range = node_or_range.location if node_or_range.is_a?(Herb::Token)
         node_or_range = herb_location_to_parser_range(node_or_range) if node_or_range.is_a?(Herb::Location)
         node_or_range = herb_range_to_parser_range(node_or_range) if node_or_range.is_a?(Herb::Range)
         node_or_range = herb_position_to_parser_range(node_or_range) if node_or_range.is_a?(Herb::Position)
 
         node_or_range
+      end
+
+      private
+
+      # Herb AST nodes have no byte range of their own, so derive one from the
+      # tokens of an ERB node when possible.
+      #
+      # @param [Herb::AST::Node] node
+      # @return [Herb::Range, nil]
+      def herb_node_range(node)
+        return unless node.respond_to?(:tag_opening) && node.respond_to?(:tag_closing)
+        return unless node.tag_opening && node.tag_closing
+
+        Herb::Range.new(node.tag_opening.range.from, node.tag_closing.range.to)
       end
 
       # Collects the buffer range of every ERB tag, paired with its node.
@@ -119,8 +136,8 @@ module RuboCop
 
         def visit_erb_node(node)
           @offsets << [
-            Range.new(@source.herb_position_to_buffer_pos(node.tag_opening.location.start),
-                      @source.herb_position_to_buffer_pos(node.tag_closing.location.end),
+            Range.new(@source.byte_to_char_offset(node.tag_opening.range.from),
+                      @source.byte_to_char_offset(node.tag_closing.range.to),
                       true),
             node
           ]
