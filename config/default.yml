@@ -27,7 +27,16 @@ Layout/CommentIndentation:
   Exclude:
     - '**/*.erb'
 
+# Indentation follows the containing ERB tag, not the file as a whole.
 Layout/InitialIndentation:
+  Exclude:
+    - '**/*.erb'
+
+Layout/ElseAlignment:
+  Exclude:
+    - '**/*.erb'
+
+Layout/EmptyLinesAroundBlockBody:
   Exclude:
     - '**/*.erb'
 
@@ -36,6 +45,10 @@ Layout/EmptyLineAfterGuardClause:
     - '**/*.erb'
 
 Layout/EndAlignment:
+  Exclude:
+    - '**/*.erb'
+
+Layout/ExtraSpacing:
   Exclude:
     - '**/*.erb'
 
@@ -79,6 +92,7 @@ Layout/IndentationWidth:
   Exclude:
     - '**/*.erb'
 
+# Non-Ruby content gives false positives for this cop.
 Layout/LeadingEmptyLines:
   Exclude:
     - '**/*.erb'
@@ -123,6 +137,11 @@ Layout/ParameterAlignment:
   Exclude:
     - '**/*.erb'
 
+Layout/SpaceBeforeSemicolon:
+  Exclude:
+    - '**/*.erb'
+
+# Non-Ruby content gives false positives for this cop.
 Layout/TrailingEmptyLines:
   Exclude:
     - '**/*.erb'
@@ -131,19 +150,24 @@ Layout/TrailingWhitespace:
   Exclude:
     - '**/*.erb'
 
+Lint/DuplicateBranch:
+  Exclude:
+    - '**/*.erb'
+
+Lint/EmptyBlock:
+  Exclude:
+    - '**/*.erb'
+
+Lint/EmptyConditionalBody:
+  Exclude:
+    - '**/*.erb'
+
+# Non-Ruby content gives false positives for this cop.
 Lint/EmptyFile:
   Exclude:
     - '**/*.erb'
 
-Lint/OutOfRangeRegexpRef:
-  Exclude:
-    - '**/*.erb'
-
-Lint/Syntax:
-  Exclude:
-    - '**/*.erb'
-
-Lint/UselessAssignment:
+Lint/EmptyWhen:
   Exclude:
     - '**/*.erb'
 
@@ -151,18 +175,11 @@ Lint/Void:
   Exclude:
     - '**/*.erb'
 
-Metrics/BlockLength:
+Style/EmptyElse:
   Exclude:
     - '**/*.erb'
 
-Metrics/BlockNesting:
-  Exclude:
-    - '**/*.erb'
-
-Naming/FileName:
-  Exclude:
-    - '**/*.erb'
-
+# ERB doesn't support magic comments.
 Style/FrozenStringLiteralComment:
   Exclude:
     - '**/*.erb'
@@ -171,7 +188,15 @@ Style/IdenticalConditionalBranches:
   Exclude:
     - '**/*.erb'
 
+Style/IfInsideElse:
+  Exclude:
+    - '**/*.erb'
+
 Style/IfUnlessModifier:
+  Exclude:
+    - '**/*.erb'
+
+Style/IfWithSemicolon:
   Exclude:
     - '**/*.erb'
 
@@ -191,11 +216,27 @@ Style/ParallelAssignment:
   Exclude:
     - '**/*.erb'
 
+Style/RedundantCondition:
+  Exclude:
+    - '**/*.erb'
+
 Style/RescueModifier:
   Exclude:
     - '**/*.erb'
 
+Style/SafeNavigation:
+  Exclude:
+    - '**/*.erb'
+
 Style/Semicolon:
+  Exclude:
+    - '**/*.erb'
+
+Style/SoleNestedConditional:
+  Exclude:
+    - '**/*.erb'
+
+Style/SymbolProc:
   Exclude:
     - '**/*.erb'
 
