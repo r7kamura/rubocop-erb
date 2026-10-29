@@ -92,10 +92,6 @@ Layout/IndentationWidth:
   Exclude:
     - '**/*.erb'
 
-Layout/LeadingEmptyLine:
-  Exclude:
-    - '**/*.erb'
-
 # Non-Ruby content gives false positives for this cop.
 Layout/LeadingEmptyLines:
   Exclude:
