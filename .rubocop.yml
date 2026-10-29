@@ -14,7 +14,7 @@ AllCops:
   Exclude:
     - spec/**/*.erb
   NewCops: enable
-  TargetRubyVersion: 3.0
+  TargetRubyVersion: 3.3
 
 Gemspec/RequireMFA:
   Enabled: false

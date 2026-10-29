@@ -8,7 +8,7 @@ module RuboCop
       def initialize(
         template_source,
         ...
-      )
+      ) # rubocop:disable Layout/SpaceInsideParens
         @template_source = template_source
         @herb_parse_result = Herb.parse(template_source)
 
