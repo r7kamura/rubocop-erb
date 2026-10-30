@@ -36,6 +36,12 @@ Layout/ElseAlignment:
   Exclude:
     - '**/*.erb'
 
+# Blank lines in the HTML between ERB tags are kept in the extracted Ruby,
+# so this cop reports blank lines that belong to the HTML.
+Layout/EmptyLines:
+  Exclude:
+    - '**/*.erb'
+
 Layout/EmptyLinesAroundBlockBody:
   Exclude:
     - '**/*.erb'
