@@ -74,4 +74,3 @@ See [#15](https://github.com/r7kamura/rubocop-erb/issues/15) for more details.
 
 - https://github.com/r7kamura/rubocop-haml
 - https://github.com/r7kamura/rubocop-slim
-- https://github.com/r7kamura/rubocop-markdown
