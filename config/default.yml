@@ -113,6 +113,13 @@ Layout/MultilineAssignmentLayout:
   Exclude:
     - '**/*.erb'
 
+# The HTML between ERB tags is dropped, so a block whose body is written on
+# the same line as its opening tag looks like a block body on the `do` line,
+# and autocorrect inserts a line break into the ERB tag.
+Layout/MultilineBlockLayout:
+  Exclude:
+    - '**/*.erb'
+
 Layout/MultilineHashBraceLayout:
   Exclude:
     - '**/*.erb'
