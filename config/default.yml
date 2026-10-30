@@ -175,6 +175,12 @@ Lint/Void:
   Exclude:
     - '**/*.erb'
 
+# The HTML between ERB tags is dropped, so an `if` around an output tag
+# looks like `if a.present?; a; end`.
+Rails/Presence:
+  Exclude:
+    - '**/*.erb'
+
 Style/EmptyElse:
   Exclude:
     - '**/*.erb'
